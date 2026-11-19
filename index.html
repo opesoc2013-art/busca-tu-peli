@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Busca tu peli</title>
-  <meta name="description" content="Buscá cualquier película y mirá sinopsis, tráiler, reparto y dónde verla en Argentina.">
+  <meta name="description" content="Buscá cualquier película o serie y mirá sinopsis, tráiler, reparto y dónde verla en Argentina.">
   <meta name="theme-color" content="#0f0a1f">
 
   <!-- App instalable (PWA) -->
@@ -21,7 +21,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Busca tu peli">
   <meta property="og:title" content="Busca tu peli 🎬">
-  <meta property="og:description" content="Películas, tráileres, reparto y dónde verlas en Argentina.">
+  <meta property="og:description" content="Películas y series: tráileres, reparto y dónde verlas en Argentina.">
   <meta property="og:url" content="https://opesoc2013-art.github.io/busca-tu-peli/">
   <meta property="og:image" content="https://opesoc2013-art.github.io/busca-tu-peli/img/og-image.jpg">
   <meta property="og:image:secure_url" content="https://opesoc2013-art.github.io/busca-tu-peli/img/og-image.jpg">
@@ -68,16 +68,31 @@
       <h1>¿Qué querés ver hoy?</h1>
       <form id="searchForm" class="search" role="search" autocomplete="off">
         <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M10 2a8 8 0 0 1 6.32 12.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.39-5.38A8 8 0 1 1 10 2zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12z"/></svg>
-        <input id="q" type="search" placeholder="Buscá una película…" enterkeyhint="search" aria-label="Buscar película">
+        <input id="q" type="search" placeholder="Buscá una película…" enterkeyhint="search" aria-label="Buscar">
         <button type="button" id="btnClear" class="clear" aria-label="Borrar búsqueda" hidden>✕</button>
       </form>
+
+      <!-- Películas o series -->
+      <div class="segmented" id="typeSwitch" role="radiogroup" aria-label="Tipo">
+        <button type="button" role="radio" aria-checked="true" data-type="movie" class="active">🎬 Películas</button>
+        <button type="button" role="radio" aria-checked="false" data-type="tv">📺 Series</button>
+      </div>
+
+      <!-- Filtros y sorpresa -->
+      <div class="filters">
+        <select id="selGenre" aria-label="Filtrar por género"><option value="">Género: todos</option></select>
+        <select id="selYear" aria-label="Filtrar por año"><option value="">Año: todos</option></select>
+        <button type="button" id="btnReset" class="btn btn-ghost btn-sm" hidden>✕ Quitar filtros</button>
+        <button type="button" id="btnRandom" class="btn btn-gold">🎲 ¿Qué veo hoy?</button>
+      </div>
     </section>
 
     <nav class="chips" id="chips" aria-label="Secciones">
       <button class="chip active" data-view="trending" type="button">🔥 Tendencias</button>
       <button class="chip" data-view="top" type="button">⭐ Mejor puntuadas</button>
-      <button class="chip" data-view="upcoming" type="button">📅 Próximos estrenos</button>
+      <button class="chip" data-view="upcoming" type="button" id="chipUpcoming">📅 Próximos estrenos</button>
       <button class="chip" data-view="favs" type="button">❤️ Favoritas</button>
+      <button class="chip" data-view="seen" type="button">✅ Ya las vi</button>
     </nav>
 
     <h2 id="sectionTitle" class="section-title">Tendencias de la semana</h2>
@@ -109,7 +124,7 @@
   <div class="watermark" aria-hidden="true">DFF</div>
 
   <!-- Ventana de detalle de la película -->
-  <dialog id="movieModal" class="modal" aria-label="Detalle de la película">
+  <dialog id="movieModal" class="modal" aria-label="Detalle">
     <div id="modalBody"></div>
   </dialog>
 
