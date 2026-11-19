@@ -1,6 +1,6 @@
 // Service worker: permite instalar la app y que funcione sin internet
 // con lo último que viste. Si cambiás archivos, subí el número de VERSION.
-const VERSION = 'v1';
+const VERSION = 'v2';
 const SHELL = 'btp-shell-' + VERSION;
 const IMGS = 'btp-img';
 const API = 'btp-api';
