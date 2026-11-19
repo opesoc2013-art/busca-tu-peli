@@ -4,7 +4,7 @@
    API: The Movie Database (TMDB) https://developer.themoviedb.org
    ========================================================= */
 
-const CFG = window.CONFIG || {};
+const CFG = (typeof CONFIG !== 'undefined' && CONFIG) || {};
 const API = 'https://api.themoviedb.org/3';
 const IMG = 'https://image.tmdb.org/t/p/';
 const LANG = CFG.LANG || 'es-AR';
@@ -47,10 +47,12 @@ function toast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
 }
 
-function getKey() {
+function keyFromConfig() {
   const k = String(CFG.TMDB_API_KEY || '').trim();
-  if (k && !k.startsWith('PEGA_ACA')) return k;
-  return store.get(LS.key, '');
+  return k && !k.startsWith('PEGA_ACA') ? k : '';
+}
+function getKey() {
+  return keyFromConfig() || store.get(LS.key, '');
 }
 
 /* ---------- llamada a la API ---------- */
@@ -71,6 +73,12 @@ async function tmdb(path, params = {}) {
 function handleError(err) {
   grid.innerHTML = '';
   btnMore.hidden = true;
+  // Si la clave viene de config.js, los visitantes NUNCA ven el cuadro para pegar clave
+  if (err.code === 'BAD_KEY' && keyFromConfig()) {
+    statusEl.innerHTML = '<span class="big">😕</span>El servicio de películas no responde en este momento. Probá más tarde.';
+    console.warn('Busca tu peli: la API key de config.js fue rechazada por TMDB. Revisala.');
+    return;
+  }
   if (err.code === 'NO_KEY' || err.code === 'BAD_KEY') {
     $('#setup').hidden = false;
     statusEl.innerHTML = err.code === 'BAD_KEY'
